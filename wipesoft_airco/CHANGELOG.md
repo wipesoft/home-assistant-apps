@@ -1,5 +1,9 @@
 # Wijzigingen
 
+## 0.1.1
+
+- Vindt Studio en Slaapkamer automatisch op hun zichtbare Home Assistant-naam wanneer een technische entiteits-ID is gewijzigd.
+
 ## 0.1.0
 
 - Eerste versie met bediening van de airco's in Studio en Slaapkamer.
