@@ -1,5 +1,5 @@
 name: WIPEsoft Airco
-version: "0.1.0"
+version: "0.1.1"
 slug: wipesoft_airco
 description: Mobiele bediening voor Mitsubishi Heavy Industries-airco's via Home Assistant.
 arch:
