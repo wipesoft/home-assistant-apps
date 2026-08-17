@@ -15,6 +15,11 @@ final class HomeAssistantClient
         return $this->request('GET', '/states/' . rawurlencode($entityId));
     }
 
+    public function getStates(): array
+    {
+        return $this->request('GET', '/states');
+    }
+
     public function callService(string $domain, string $service, array $data): array
     {
         return $this->request('POST', "/services/{$domain}/{$service}", $data);
@@ -68,4 +73,3 @@ final class HomeAssistantClient
         return is_array($decoded) ? $decoded : [];
     }
 }
-
