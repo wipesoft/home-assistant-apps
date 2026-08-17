@@ -30,11 +30,38 @@ function normalizeState(array $state, array $aircon): array
     ];
 }
 
+function findAirconState(array $states, array $aircon): array
+{
+    foreach ($states as $state) {
+        if (($state['entity_id'] ?? '') === $aircon['entity_id']) {
+            return $state;
+        }
+    }
+
+    foreach ($states as $state) {
+        $entityId = (string) ($state['entity_id'] ?? '');
+        $friendlyName = (string) ($state['attributes']['friendly_name'] ?? '');
+        if (str_starts_with($entityId, 'climate.') && strcasecmp($friendlyName, $aircon['name']) === 0) {
+            return $state;
+        }
+    }
+
+    throw new RuntimeException("Geen klimaat-entiteit gevonden voor {$aircon['name']}.");
+}
+
+function resolvedAircon(array $aircon, array $state): array
+{
+    $aircon['entity_id'] = (string) $state['entity_id'];
+    return $aircon;
+}
+
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $states = $haClient->getStates();
         $result = [];
         foreach (AIRCONS as $key => $aircon) {
-            $result[$key] = normalizeState($haClient->getState($aircon['entity_id']), $aircon);
+            $state = findAirconState($states, $aircon);
+            $result[$key] = normalizeState($state, resolvedAircon($aircon, $state));
         }
         outputJson(['ok' => true, 'aircons' => $result]);
     }
@@ -53,7 +80,10 @@ try {
         outputJson(['ok' => false, 'error' => 'Onbekende ruimte.'], 422);
     }
 
-    $entityId = AIRCONS[$room]['entity_id'];
+    $states = $haClient->getStates();
+    $currentState = findAirconState($states, AIRCONS[$room]);
+    $aircon = resolvedAircon(AIRCONS[$room], $currentState);
+    $entityId = $aircon['entity_id'];
     $action = (string) ($input['action'] ?? '');
     $service = '';
     $data = ['entity_id' => $entityId];
@@ -95,9 +125,8 @@ try {
     usleep(400000);
     outputJson([
         'ok' => true,
-        'aircon' => normalizeState($haClient->getState($entityId), AIRCONS[$room]),
+        'aircon' => normalizeState($haClient->getState($entityId), $aircon),
     ]);
 } catch (Throwable $exception) {
     outputJson(['ok' => false, 'error' => $exception->getMessage()], 502);
 }
-
