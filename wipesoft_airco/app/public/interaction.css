@@ -1,0 +1,32 @@
+.busy {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    border-color: rgba(var(--accent-rgb), .28);
+}
+
+.busy::after {
+    content: "";
+    position: absolute;
+    z-index: 4;
+    top: 0;
+    left: 0;
+    width: 34%;
+    height: 2px;
+    border-radius: 99px;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: progress 1s ease-in-out infinite;
+}
+
+.power:active,
+.temp-buttons button:active,
+.mode-picker button:active,
+.fan-picker button:active {
+    transform: scale(.94);
+}
+
+@keyframes progress {
+    from { transform: translateX(-110%); }
+    to { transform: translateX(310%); }
+}
