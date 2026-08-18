@@ -2,7 +2,7 @@
 
 Deze repository bevat de lokale **WIPEsoft Airco** App voor Home Assistant Green.
 
-De app biedt een mobiele bediening voor de Mitsubishi Heavy Industries-airco's in Studio en Slaapkamer. De interface draait via Home Assistant Ingress en gebruikt uitsluitend de interne Home Assistant API.
+De app biedt een luxe mobiele bediening voor de Mitsubishi Heavy Industries-airco's in Studio en Slaapkamer, inclusief temperatuur, bedrijfsstand, ventilator en verticale/horizontale lamellen. De interface draait via Home Assistant Ingress en gebruikt uitsluitend de interne Home Assistant API.
 
 ## Installatie
 
