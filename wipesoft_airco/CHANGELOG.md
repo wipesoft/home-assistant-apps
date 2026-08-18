@@ -1,5 +1,11 @@
 # Wijzigingen
 
+## 0.2.1
+
+- De aan/uitknop toont nu ondubbelzinnig de actuele status van de binnenunit.
+- Bediening reageert direct en synchroniseert daarna op de achtergrond met Home Assistant.
+- Subtiele tikfeedback en een compacte voortgangsanimatie vervangen het blokkeren van de volledige kaart.
+
 ## 0.2.0
 
 - Volledig vernieuwde premium mobiele vormgeving met live statuskleuren en animaties.
