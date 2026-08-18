@@ -24,9 +24,24 @@ function normalizeState(array $state, array $aircon): array
         'on' => ($state['state'] ?? 'off') !== 'off',
         'current_temperature' => $attributes['current_temperature'] ?? null,
         'target_temperature' => $attributes['temperature'] ?? null,
+        'min_temperature' => $attributes['min_temp'] ?? 16,
+        'max_temperature' => $attributes['max_temp'] ?? 30,
         'fan_mode' => $attributes['fan_mode'] ?? null,
+        'swing_mode' => $attributes['swing_mode'] ?? null,
+        'swing_horizontal_mode' => $attributes['swing_horizontal_mode'] ?? null,
         'hvac_modes' => $attributes['hvac_modes'] ?? [],
         'fan_modes' => $attributes['fan_modes'] ?? [],
+        'swing_modes' => $attributes['swing_modes'] ?? [],
+        'swing_horizontal_modes' => $attributes['swing_horizontal_modes'] ?? [],
+        'hvac_action' => $attributes['hvac_action'] ?? null,
+        'action_label' => match ($attributes['hvac_action'] ?? null) {
+            'cooling' => 'Actief aan het koelen',
+            'heating' => 'Actief aan het verwarmen',
+            'drying' => 'Lucht wordt gedroogd',
+            'fan' => 'Ventilatie actief',
+            'idle' => 'Op temperatuur',
+            default => null,
+        },
     ];
 }
 
@@ -95,8 +110,10 @@ try {
             break;
         case 'set_temperature':
             $temperature = filter_var($input['temperature'] ?? null, FILTER_VALIDATE_FLOAT);
-            if ($temperature === false || $temperature < 16 || $temperature > 30) {
-                outputJson(['ok' => false, 'error' => 'Kies een temperatuur tussen 16 en 30 °C.'], 422);
+            $minimum = (float) ($currentState['attributes']['min_temp'] ?? 16);
+            $maximum = (float) ($currentState['attributes']['max_temp'] ?? 30);
+            if ($temperature === false || $temperature < $minimum || $temperature > $maximum) {
+                outputJson(['ok' => false, 'error' => "Kies een temperatuur tussen {$minimum} en {$maximum} °C."], 422);
             }
             $service = 'set_temperature';
             $data['temperature'] = round((float) $temperature * 2) / 2;
@@ -116,6 +133,24 @@ try {
             }
             $service = 'set_fan_mode';
             $data['fan_mode'] = $fanMode;
+            break;
+        case 'set_swing_vertical':
+            $swingMode = trim((string) ($input['swing_mode'] ?? ''));
+            $availableModes = $currentState['attributes']['swing_modes'] ?? [];
+            if (!in_array($swingMode, $availableModes, true)) {
+                outputJson(['ok' => false, 'error' => 'Ongeldige verticale lamellenstand.'], 422);
+            }
+            $service = 'set_vertical_swing_mode';
+            $data['swing_mode'] = $swingMode;
+            break;
+        case 'set_swing_horizontal':
+            $swingMode = trim((string) ($input['swing_mode'] ?? ''));
+            $availableModes = $currentState['attributes']['swing_horizontal_modes'] ?? [];
+            if (!in_array($swingMode, $availableModes, true)) {
+                outputJson(['ok' => false, 'error' => 'Ongeldige horizontale lamellenstand.'], 422);
+            }
+            $service = 'set_horizontal_swing_mode';
+            $data['swing_mode'] = $swingMode;
             break;
         default:
             outputJson(['ok' => false, 'error' => 'Onbekende opdracht.'], 422);
