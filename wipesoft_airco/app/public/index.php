@@ -21,7 +21,8 @@ function icon(string $name): string
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#07111f">
     <title>WIPEsoft Climate</title>
-    <link rel="stylesheet" href="style.css?v=0.2.0">
+    <link rel="stylesheet" href="style.css?v=0.2.1">
+    <link rel="stylesheet" href="interaction.css?v=0.2.1">
 </head>
 <body>
 <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
@@ -40,7 +41,7 @@ function icon(string $name): string
                 <div class="card-glow"></div>
                 <div class="card-head">
                     <div><p class="room-label"><span></span> Klimaatzone</p><h2><?= htmlspecialchars($aircon['name']) ?></h2><p class="activity" data-state>Gegevens ophalen…</p></div>
-                    <button class="power" type="button" aria-label="<?= htmlspecialchars($aircon['name']) ?> aan- of uitzetten"><?= icon('power') ?><span>Aan</span></button>
+                    <button class="power" type="button" aria-label="<?= htmlspecialchars($aircon['name']) ?> aan- of uitzetten"><?= icon('power') ?><span>—</span></button>
                 </div>
                 <div class="climate-display">
                     <div class="room-reading"><span><?= icon('thermometer') ?> Kamertemperatuur</span><strong data-current>—</strong></div>
@@ -72,6 +73,6 @@ function icon(string $name): string
     <footer><span>●</span> Lokaal verbonden met Home Assistant</footer>
 </main>
 <script>window.APP_CONFIG = <?= json_encode(['api' => 'api.php', 'csrfToken' => $_SESSION['csrf_token']], JSON_UNESCAPED_SLASHES) ?>;</script>
-<script src="app.js?v=0.2.0" defer></script>
+<script src="app.js?v=0.2.1" defer></script>
 </body>
 </html>
