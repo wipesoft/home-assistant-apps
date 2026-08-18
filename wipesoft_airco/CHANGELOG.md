@@ -1,5 +1,14 @@
 # Wijzigingen
 
+## 0.2.0
+
+- Volledig vernieuwde premium mobiele vormgeving met live statuskleuren en animaties.
+- Visuele thermostaat met dynamische temperatuurboog.
+- Tikbare bediening voor bedrijfsstand en ventilatorsnelheid.
+- Verticale en horizontale lamellenbediening, inclusief automatische en 3D-standen.
+- Live weergave van de luchtstroom en actuele HVAC-activiteit.
+- Temperatuurgrenzen worden dynamisch uit Home Assistant overgenomen.
+
 ## 0.1.1
 
 - Vindt Studio en Slaapkamer automatisch op hun zichtbare Home Assistant-naam wanneer een technische entiteits-ID is gewijzigd.
