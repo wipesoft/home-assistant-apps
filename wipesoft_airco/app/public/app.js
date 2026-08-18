@@ -52,7 +52,9 @@ function render(room, state) {
     card.querySelector('[data-state]').textContent = state.on ? (state.action_label || modeLabels[state.state] || state.state) : 'Airco staat uit';
     card.querySelector('[data-mode-label]').textContent = modeLabels[state.state] || state.state;
     card.querySelector('[data-fan-label]').textContent = fanLabels[state.fan_mode] || state.fan_mode || '—';
-    card.querySelector('.power span').textContent = state.on ? 'Uit' : 'Aan';
+    const power = card.querySelector('.power');
+    power.querySelector('span').textContent = state.on ? 'Aan' : 'Uit';
+    power.title = state.on ? 'Tik om uit te schakelen' : 'Tik om in te schakelen';
     buttonPicker(card.querySelector('[data-mode-picker]'), (state.hvac_modes || []).filter(mode => mode !== 'off'), state.state, modeLabels, modeIcons);
     buttonPicker(card.querySelector('[data-fan-picker]'), state.fan_modes || [], state.fan_mode, fanLabels);
     optionList(card.querySelector('[data-swing-vertical]'), state.swing_modes || [], state.swing_mode, verticalLabels);
@@ -77,11 +79,59 @@ async function refresh({ quiet = false } = {}) {
     catch (error) { connection.classList.add('offline'); connection.querySelector('b').textContent = 'Offline'; if (!quiet) showMessage(error.message, true); }
 }
 
+function optimisticState(state, action, extra) {
+    const next = { ...state };
+    switch (action) {
+        case 'turn_on':
+            next.on = true;
+            next.state = state.state === 'off' ? 'auto' : state.state;
+            next.action_label = 'Wordt ingeschakeld…';
+            break;
+        case 'turn_off':
+            next.on = false;
+            next.state = 'off';
+            break;
+        case 'set_temperature':
+            next.target_temperature = extra.temperature;
+            break;
+        case 'set_mode':
+            next.on = true;
+            next.state = extra.mode;
+            next.action_label = 'Stand wordt aangepast…';
+            break;
+        case 'set_fan':
+            next.fan_mode = extra.fan_mode;
+            break;
+        case 'set_swing_vertical':
+            next.swing_mode = extra.swing_mode;
+            break;
+        case 'set_swing_horizontal':
+            next.swing_horizontal_mode = extra.swing_mode;
+            break;
+    }
+    return next;
+}
+
 async function act(room, action, extra = {}) {
-    const card = cards.get(room); card.classList.add('busy'); showMessage('Instelling wordt toegepast…');
-    try { const data = await request({ room, action, ...extra }); render(room, data.aircon); showMessage('Comfortinstelling bijgewerkt'); }
-    catch (error) { showMessage(error.message, true); await refresh({ quiet: true }); }
-    finally { card.classList.remove('busy'); }
+    const card = cards.get(room);
+    const previous = states.get(room);
+    if (!previous || card.classList.contains('busy')) return;
+    const optimistic = optimisticState(previous, action, extra);
+    render(room, optimistic);
+    card.classList.add('busy');
+    showMessage('Instelling wordt toegepast…');
+    try {
+        const data = await request({ room, action, ...extra });
+        render(room, optimisticState(data.aircon, action, extra));
+        showMessage('Comfortinstelling bijgewerkt');
+        setTimeout(() => refresh({ quiet: true }), 1400);
+    } catch (error) {
+        render(room, previous);
+        showMessage(error.message, true);
+        await refresh({ quiet: true });
+    } finally {
+        card.classList.remove('busy');
+    }
 }
 
 cards.forEach((card, room) => {
