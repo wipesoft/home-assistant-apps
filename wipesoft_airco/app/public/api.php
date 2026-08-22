@@ -149,8 +149,8 @@ try {
             if (!in_array($swingMode, $availableModes, true)) {
                 outputJson(['ok' => false, 'error' => 'Ongeldige horizontale lamellenstand.'], 422);
             }
-            $service = 'set_horizontal_swing_mode';
-            $data['swing_mode'] = $swingMode;
+            $service = 'set_swing_horizontal_mode';
+            $data['swing_horizontal_mode'] = $swingMode;
             break;
         default:
             outputJson(['ok' => false, 'error' => 'Onbekende opdracht.'], 422);
