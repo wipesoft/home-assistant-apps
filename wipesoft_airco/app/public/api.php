@@ -21,7 +21,7 @@ function normalizeState(array $state, array $aircon): array
         'name' => $aircon['name'],
         'entity_id' => $aircon['entity_id'],
         'state' => $state['state'] ?? 'unavailable',
-        'on' => ($state['state'] ?? 'off') !== 'off',
+        'on' => !in_array(($state['state'] ?? 'off'), ['off', 'unavailable', 'unknown'], true),
         'current_temperature' => $attributes['current_temperature'] ?? null,
         'target_temperature' => $attributes['temperature'] ?? null,
         'min_temperature' => $attributes['min_temp'] ?? 16,

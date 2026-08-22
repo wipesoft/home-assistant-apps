@@ -21,8 +21,8 @@ function icon(string $name): string
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#07111f">
     <title>WIPEsoft Climate</title>
-    <link rel="stylesheet" href="style.css?v=0.2.1">
-    <link rel="stylesheet" href="interaction.css?v=0.2.1">
+    <link rel="stylesheet" href="style.css?v=0.3.0">
+    <link rel="stylesheet" href="interaction.css?v=0.3.0">
 </head>
 <body>
 <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
@@ -73,6 +73,6 @@ function icon(string $name): string
     <footer><span>●</span> Lokaal verbonden met Home Assistant</footer>
 </main>
 <script>window.APP_CONFIG = <?= json_encode(['api' => 'api.php', 'csrfToken' => $_SESSION['csrf_token']], JSON_UNESCAPED_SLASHES) ?>;</script>
-<script src="app.js?v=0.2.1" defer></script>
+<script src="app.js?v=0.3.0" defer></script>
 </body>
 </html>
