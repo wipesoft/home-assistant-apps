@@ -1,5 +1,9 @@
 # Wijzigingen
 
+## 0.3.1
+
+- Verticale lamellen gebruiken nu de standaard Home Assistant-actie `climate.set_swing_mode`, zodat een ontbrekende custom actieregistratie geen HTTP 400 meer veroorzaakt.
+
 ## 0.3.0
 
 - Optionele beveiligde uitgaande bridge voor bediening via een externe PHP-app.
