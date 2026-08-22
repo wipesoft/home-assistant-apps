@@ -1,5 +1,5 @@
 name: WIPEsoft Airco
-version: "0.2.1"
+version: "0.3.0"
 slug: wipesoft_airco
 description: Mobiele bediening voor Mitsubishi Heavy Industries-airco's via Home Assistant.
 arch:
@@ -18,6 +18,12 @@ stage: experimental
 options:
   studio_entity: climate.airco_studio
   slaapkamer_entity: climate.airco_slaapkamer
+  remote_url: ""
+  bridge_token: ""
+  poll_interval: 3
 schema:
   studio_entity: str
   slaapkamer_entity: str
+  remote_url: str
+  bridge_token: password
+  poll_interval: int(2,30)

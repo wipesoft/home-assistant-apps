@@ -1,5 +1,11 @@
 # Wijzigingen
 
+## 0.3.0
+
+- Optionele beveiligde uitgaande bridge voor bediening via een externe PHP-app.
+- Opdrachten worden opgehaald zonder poorten in de thuisrouter te openen.
+- Werkelijke Home Assistant-status wordt teruggekoppeld naar de externe app.
+
 ## 0.2.1
 
 - De aan/uitknop toont nu ondubbelzinnig de actuele status van de binnenunit.
