@@ -98,8 +98,8 @@ final class RemoteBridge
                 if (!in_array($swingMode, $state['attributes']['swing_horizontal_modes'] ?? [], true)) {
                     throw new RuntimeException('Ongeldige horizontale lamellenstand.');
                 }
-                $service = 'set_horizontal_swing_mode';
-                $data['swing_mode'] = $swingMode;
+                $service = 'set_swing_horizontal_mode';
+                $data['swing_horizontal_mode'] = $swingMode;
                 break;
             default:
                 throw new RuntimeException('Onbekende opdracht.');
