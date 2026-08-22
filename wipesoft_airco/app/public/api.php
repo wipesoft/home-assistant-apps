@@ -140,7 +140,7 @@ try {
             if (!in_array($swingMode, $availableModes, true)) {
                 outputJson(['ok' => false, 'error' => 'Ongeldige verticale lamellenstand.'], 422);
             }
-            $service = 'set_vertical_swing_mode';
+            $service = 'set_swing_mode';
             $data['swing_mode'] = $swingMode;
             break;
         case 'set_swing_horizontal':
